@@ -1,0 +1,154 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://spring.io/guides/gs-producing-web-service"
+           targetNamespace="http://spring.io/guides/gs-producing-web-service" elementFormDefault="qualified">
+
+    <!--///////////////////////-->
+    <!--  Responses/Requests   -->
+    <!--///////////////////////-->
+    <xs:element name="pesel">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="[0-9]{11}" />
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="name">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="[a-zA-Z]{1,20}" />
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="dueDays">
+        <xs:simpleType>
+            <xs:restriction base="xs:int">
+                <xs:minInclusive value="5"/>
+                <xs:maxInclusive value="100"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <!--CLIENT-->
+
+    <xs:element name="getClientRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:pesel" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getClientResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="client" type="tns:client"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="createClientRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:pesel"/>
+                <xs:element ref="tns:name" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+<!--    LOAN-->
+
+        <xs:element name="createLoanRequest">
+            <xs:complexType>
+                <xs:sequence>
+                    <xs:element ref="tns:pesel" />
+                    <xs:element name="amount" type="xs:int"/>
+                    <xs:element ref="tns:dueDays" />
+                </xs:sequence>
+            </xs:complexType>
+        </xs:element>
+
+
+        <xs:element name="payLoanRequest">
+            <xs:complexType>
+                <xs:sequence>
+                    <xs:element name="loanId" type="xs:int" />
+                    <xs:element name="amount" type="xs:int"/>
+                    <xs:element ref="tns:pesel" />
+                </xs:sequence>
+            </xs:complexType>
+        </xs:element>
+
+    <xs:element name="getLoanRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="loanId" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <!--    OTHER-->
+
+    <xs:element name="messageResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="message" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+
+
+    <!-- //////////-->
+    <!--  MODEL   -->
+    <!--//////////-->
+
+    <xs:complexType name="client">
+        <xs:sequence>
+
+            <xs:element ref="tns:name" />
+            <xs:element ref="tns:loan" maxOccurs="unbounded"/>
+
+        </xs:sequence>
+
+        <xs:attribute name="pesel"  use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="[0-9]{11}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+
+    </xs:complexType>
+
+
+
+    <xs:element name="loan">
+        <xs:complexType>
+            <xs:sequence>
+
+                <xs:element name="loanAmount">
+                <xs:simpleType>
+                    <xs:restriction base="xs:integer">
+                        <xs:minInclusive value="100"/>
+                        <xs:maxInclusive value="100000"/>
+                    </xs:restriction>
+                </xs:simpleType>
+                </xs:element>
+
+                <xs:element name="loanAmountToPayback" type="xs:int" />
+
+                <xs:element ref="tns:dueDays" />
+                <xs:element name="paidBack" type="xs:boolean" />
+
+            </xs:sequence>
+
+            <xs:attribute name="loanId" type="xs:int" use="required"/>
+
+        </xs:complexType>
+    </xs:element>
+
+
+</xs:schema>
