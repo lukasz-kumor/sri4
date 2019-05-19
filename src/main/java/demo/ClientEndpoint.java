@@ -31,8 +31,8 @@ public class ClientEndpoint {
 	@ResponsePayload
 	public MessageResponse createClient(@RequestPayload CreateClientRequest request) {
 		MessageResponse response = new MessageResponse();
-
-		if(request.getName() != null || request.getName().length() != 15 || request.getPesel() != null || request.getPesel().length() != 11){
+		response.setMessage("Wrong parameters");
+		if(request.getName() != null || request.getName().length() != 15  || request.getPesel() != null || request.getPesel().length() != 11){
 			if(clientRepository.findClient(request.getPesel()) == null){
 				Client client = new Client();
 				client.setPesel(request.getPesel());
@@ -51,6 +51,7 @@ public class ClientEndpoint {
 	@ResponsePayload
 	public MessageResponse createLoan(@RequestPayload CreateLoanRequest request) {
 		MessageResponse response = new MessageResponse();
+		response.setMessage("Wrong parameters");
 		if(request.getPesel() != null || request.getAmount() > 100 || request.getDueDays() > 5) {
 			response.setMessage(clientRepository.createLoan(request.getPesel(), request.getAmount(),request.getDueDays()));
 
@@ -61,6 +62,7 @@ public class ClientEndpoint {
 	@ResponsePayload
 	public MessageResponse payLoan(@RequestPayload PayLoanRequest request) {
 		MessageResponse response = new MessageResponse();
+		response.setMessage("Wrong parameters");
 		if(request.getAmount() > 0){
 		response.setMessage(clientRepository.payLoan(request.getPesel(), request.getAmount(), request.getLoanId()));
 		}

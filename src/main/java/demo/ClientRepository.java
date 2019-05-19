@@ -26,7 +26,7 @@ public class ClientRepository {
         loan.setLoanAmount(1000);
         loan.setLoanId(1);
         loan.setPaidBack(false);
-
+		loan.setLoanAmountToPayback(1200);
         client.setName("Andrzej");
         client.setPesel("95083011135");
         client.addLoan(loan);
@@ -39,7 +39,9 @@ public class ClientRepository {
 		Assert.notNull(pesel, "The client's pesel must not be null");
 
 		for(Client client: clientList){
+			System.out.println("client pesel: "  + client.getPesel());
 		    if(client.getPesel().equals(pesel)){
+		    	System.out.println("I GOT DA CLIENT");
 		        return client;
             }
         }
